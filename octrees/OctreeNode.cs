@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using System;
-using System.Numerics;
 public class OctreeNode {
     public Position center { get; private set; }
     public int size { get; private set; }
@@ -9,7 +8,8 @@ public class OctreeNode {
     public Chunk chunk { get; set; }
     public int layer { get; private set; }
 
-    public OctreeNode (Position center, int size, int layer) {
+    public OctreeNode (Position center, int size, int layer) 
+    {
         this.center = center;
         this.size = size;
         this.layer = layer;
@@ -17,7 +17,8 @@ public class OctreeNode {
         children = new ConcurrentDictionary<(int, int, int), OctreeNode>();
     }
 
-    public void Initialize () {
+    public void Initialize () 
+    {
         int size = this.size/2;
         children.TryAdd(new ValueTuple<int, int, int>(1, 1 , 1), new OctreeNode (new Position(center.x + size, center.y + size, center.z + size), size, layer - 1));
         children.TryAdd(new ValueTuple<int, int, int>(0, 1 , 1), new OctreeNode (new Position(center.x - size, center.y + size, center.z + size), size, layer - 1));

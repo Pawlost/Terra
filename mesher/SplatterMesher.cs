@@ -1,5 +1,5 @@
 using Godot;
-
+/*
 public class SplatterMesher
 {
     static readonly Vector3[] Normals = new Vector3[]
@@ -121,3 +121,4 @@ public class SplatterMesher
         return instance;
     }
 }
+*/

@@ -6,17 +6,14 @@ using Godot;
 public class Terra {
     // Declare member variables here. Examples:
     private volatile Octree octree;
-    private volatile Node parent;
     private volatile Dictionary<string, MeshInstance> meshes;
 
     public Position boundries{get; private set;}
 
-    public Terra (Position position, Position boundries, Node parent) {
-        this.parent = parent;
-
+    public Terra (Position position, int octreeSize) {
         this.boundries = boundries;
 
-        octree = new Octree (position, boundries.GetMax());
+        octree = new Octree (position, octreeSize);
 
         meshes = new Dictionary<string, MeshInstance> ();
     }
@@ -33,26 +30,19 @@ public class Terra {
                 Position pos = new Position(posX, posY, posZ);
                 int size = octree.size;
 
-                while (currentLayer > layer) {
-
-                    currentNode = currentNode.SelectChild(Convert.ToInt32(posX > currentNode.center.x), Convert.ToInt32(posY > currentNode.center.y), Convert.ToInt32(posZ > currentNode.center.z));
+                for(int i = octree.layers; i >= layer; i--)
+                {
+                    currentNode = currentNode.SelectChild(Convert.ToInt32(posX > currentNode.center.x), 
+                    Convert.ToInt32(posY > currentNode.center.y), 
+                    Convert.ToInt32(posZ > currentNode.center.z));
 
                     if (!currentNode.Initialized)
                         currentNode.Initialize ();
 
                     if(currentNode == null)
                     {
-                        return null;
+                        break;
                     }
-
-                    currentLayer -= 1;                                        
-                }
-
-                if (!currentNode.Initialized)
-                    currentNode.Initialize ();
-
-                if (currentLayer == 0) {
-                    currentNode = currentNode.SelectChild(Convert.ToInt32(posX > 0), Convert.ToInt32(posY > 0), Convert.ToInt32(posZ > 0));
                 }
 
                 return currentNode;

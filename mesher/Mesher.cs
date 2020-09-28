@@ -434,6 +434,7 @@ public class Mesher {
                 //Bottom
                 offset = staticOffset;
                 y = ycopy;
+                sx = x;
                 neighbor = neighbors[5];
                 currentLocation = (5 * materials + location) * 4;
 
@@ -449,7 +450,6 @@ public class Mesher {
                 }
 
                 //Naive Greedy Meshing
-                sx = x;
                 if (x > 0) {
                     for (int index = 0; index < materials; index++) {
                         offset = staticOffset - (index * 4);
